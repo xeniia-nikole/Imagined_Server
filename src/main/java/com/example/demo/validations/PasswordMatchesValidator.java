@@ -1,7 +1,7 @@
 package com.example.demo.validations;
 
 import com.example.demo.annotations.PasswordMatches;
-import com.example.demo.payload.request.SignupRequest;
+import com.example.demo.payload.request.SignUpRequest;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -15,7 +15,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
     @Override
     public boolean isValid(Object obj, ConstraintValidatorContext constraintValidatorContext) {
-        SignupRequest userSignupRequest = (SignupRequest) obj;
+        SignUpRequest userSignupRequest = (SignUpRequest) obj;
         return userSignupRequest.getPassword().equals(userSignupRequest.getConfirmPassword());
     }
 }

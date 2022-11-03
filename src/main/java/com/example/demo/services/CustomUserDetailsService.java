@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,7 +37,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
-    public static User build(User user) {
+    public static @NotNull User build(@NotNull User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());

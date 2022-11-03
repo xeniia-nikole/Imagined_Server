@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,9 +16,8 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
-    private String description;
+    private String caption;
     private String location;
     private Integer likes;
 
@@ -27,20 +25,19 @@ public class Post {
     @ElementCollection(targetClass = String.class)
     private Set<String> likedUsers = new HashSet<>();
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER,
-            mappedBy = "post", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "post", orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
-
-    @JsonFormat(pattern = "yyyy-mm-dd HH:mm:ss")
     @Column(updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdDate;
+
+    public Post() {
+    }
 
     @PrePersist
-    protected void onCreate(){
-        this.createdAt = LocalDateTime.now();
+    protected void onCreate()
+    {
+        this.createdDate = LocalDateTime.now();
     }
 
 }
