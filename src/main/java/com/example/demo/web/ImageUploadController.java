@@ -38,14 +38,14 @@ public class ImageUploadController {
 
     @GetMapping("/profileImage")
     public ResponseEntity<Image> getImageForUser(Principal principal) {
-        Image userImage = imageUploadService.getImageToUser(principal);
-        return new ResponseEntity<>(userImage, HttpStatus.OK);
+        return new ResponseEntity<>(imageUploadService.getImageToUser(principal),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{postId}/image")
     public ResponseEntity<Image> getImageToPost(@PathVariable("postId") String postId) {
-        Image postImage = imageUploadService.getImageToPost(Long.parseLong(postId));
-        return new ResponseEntity<>(postImage, HttpStatus.OK);
+        return new ResponseEntity<>(imageUploadService.getImageToPost(Long.parseLong(postId)),
+                HttpStatus.OK);
     }
 
 }

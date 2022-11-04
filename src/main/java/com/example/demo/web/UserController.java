@@ -29,18 +29,14 @@ public class UserController {
 
     @GetMapping("/")
     public ResponseEntity<UserDTO> getCurrentUser(Principal principal) {
-        User user = userService.getCurrentUser(principal);
-        UserDTO userDTO = userFacade.userToUserDTO(user);
-
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        return new ResponseEntity<>(userFacade.userToUserDTO(userService.getCurrentUser(principal)),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDTO> getUserProfile(@PathVariable("userId") String userId) {
-        User user = userService.getUserById(Long.parseLong(userId));
-        UserDTO userDTO = userFacade.userToUserDTO(user);
-
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        return new ResponseEntity<>(userFacade.userToUserDTO(userService.getUserById(Long.parseLong(userId))),
+                HttpStatus.OK);
     }
 
     @PostMapping("/update")
@@ -48,15 +44,7 @@ public class UserController {
         ResponseEntity<Object> errors = responseErrorValidation.mapValidationService(bindingResult);
         if (!ObjectUtils.isEmpty(errors)) return errors;
 
-        User user = userService.updateUser(userDTO, principal);
-
-        UserDTO userUpdated = userFacade.userToUserDTO(user);
-        return new ResponseEntity<>(userUpdated, HttpStatus.OK);
+        return new ResponseEntity<>(userFacade.userToUserDTO(userService.updateUser(userDTO, principal)),
+                HttpStatus.OK);
     }
-
-
-
-
-
-
 }

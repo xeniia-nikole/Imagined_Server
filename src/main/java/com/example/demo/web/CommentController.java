@@ -2,7 +2,6 @@ package com.example.demo.web;
 
 import com.example.demo.dataTransferObject.CommentDTO;
 import com.example.demo.facade.CommentFacade;
-import com.example.demo.model.Comment;
 import com.example.demo.payload.reponse.MessageResponse;
 import com.example.demo.services.CommentService;
 import com.example.demo.validations.ResponseErrorValidation;
@@ -37,11 +36,9 @@ public class CommentController {
                                                 Principal principal) {
         ResponseEntity<Object> errors = responseErrorValidation.mapValidationService(bindingResult);
         if (!ObjectUtils.isEmpty(errors)) return errors;
-
-        Comment comment = commentService.saveComment(Long.parseLong(postId), commentDTO, principal);
-        CommentDTO createdComment = commentFacade.commentToCommentDTO(comment);
-
-        return new ResponseEntity<>(createdComment, HttpStatus.OK);
+        return new ResponseEntity<>(commentFacade.commentToCommentDTO(commentService.saveComment(
+                Long.parseLong(postId), commentDTO, principal)),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{postId}/all")

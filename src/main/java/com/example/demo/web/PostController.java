@@ -2,7 +2,6 @@ package com.example.demo.web;
 
 import com.example.demo.dataTransferObject.PostDTO;
 import com.example.demo.facade.PostFacade;
-import com.example.demo.model.Post;
 import com.example.demo.payload.reponse.MessageResponse;
 import com.example.demo.services.PostService;
 import com.example.demo.validations.ResponseErrorValidation;
@@ -37,10 +36,8 @@ public class PostController {
         ResponseEntity<Object> errors = responseErrorValidation.mapValidationService(bindingResult);
         if (!ObjectUtils.isEmpty(errors)) return errors;
 
-        Post post = postService.createPost(postDTO, principal);
-        PostDTO createdPost = postFacade.postToPostDTO(post);
-
-        return new ResponseEntity<>(createdPost, HttpStatus.OK);
+        return new ResponseEntity<>(postFacade.postToPostDTO(postService.createPost(postDTO, principal))
+                , HttpStatus.OK);
     }
 
     @GetMapping("/all")
@@ -66,10 +63,9 @@ public class PostController {
     @PostMapping("/{postId}/{username}/like")
     public ResponseEntity<PostDTO> likePost(@PathVariable("postId") String postId,
                                             @PathVariable("username") String username) {
-        Post post = postService.likePost(Long.parseLong(postId), username);
-        PostDTO postDTO = postFacade.postToPostDTO(post);
 
-        return new ResponseEntity<>(postDTO, HttpStatus.OK);
+        return new ResponseEntity<>(postFacade.postToPostDTO(postService.likePost(Long.parseLong(postId), username)),
+                HttpStatus.OK);
     }
 
     @PostMapping("/{postId}/delete")
