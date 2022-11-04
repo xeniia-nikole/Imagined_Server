@@ -48,11 +48,11 @@ public class ImageUploadService {
             imageRepository.delete(userProfileImage);
         }
 
-        Image imageModel = new Image();
-        imageModel.setUserId(user.getId());
-        imageModel.setImageBytes(compressBytes(file.getBytes()));
-        imageModel.setName(file.getOriginalFilename());
-        return imageRepository.save(imageModel);
+        Image image = new Image();
+        image.setUserId(user.getId());
+        image.setImageBytes(compressBytes(file.getBytes()));
+        image.setName(file.getOriginalFilename());
+        return imageRepository.save(image);
     }
 
     public Image uploadImageToPost(@NotNull MultipartFile file, Principal principal, Long postId) throws IOException {
@@ -62,35 +62,35 @@ public class ImageUploadService {
                 .filter(p -> p.getId().equals(postId))
                 .collect(toSinglePostCollector());
 
-        Image imageModel = new Image();
-        imageModel.setPostId(post.getId());
-        imageModel.setImageBytes(file.getBytes());
-        imageModel.setImageBytes(compressBytes(file.getBytes()));
-        imageModel.setName(file.getOriginalFilename());
+        Image image = new Image();
+        image.setPostId(post.getId());
+        image.setImageBytes(file.getBytes());
+        image.setImageBytes(compressBytes(file.getBytes()));
+        image.setName(file.getOriginalFilename());
         LOG.info("Uploading image to Post {}", post.getId());
 
-        return imageRepository.save(imageModel);
+        return imageRepository.save(image);
     }
 
     public Image getImageToUser(Principal principal) {
         User user = getUserByPrincipal(principal);
 
-        Image imageModel = imageRepository.findByUserId(user.getId()).orElse(null);
-        if (!ObjectUtils.isEmpty(imageModel)) {
-            imageModel.setImageBytes(decompressBytes(imageModel.getImageBytes()));
+        Image image = imageRepository.findByUserId(user.getId()).orElse(null);
+        if (!ObjectUtils.isEmpty(image)) {
+            image.setImageBytes(decompressBytes(image.getImageBytes()));
         }
 
-        return imageModel;
+        return image;
     }
 
     public Image getImageToPost(Long postId) {
-        Image imageModel = imageRepository.findByPostId(postId)
+        Image image = imageRepository.findByPostId(postId)
                 .orElseThrow(() -> new ImageNotFoundException("Cannot find image to Post: " + postId));
-        if (!ObjectUtils.isEmpty(imageModel)) {
-            imageModel.setImageBytes(decompressBytes(imageModel.getImageBytes()));
+        if (!ObjectUtils.isEmpty(image)) {
+            image.setImageBytes(decompressBytes(image.getImageBytes()));
         }
 
-        return imageModel;
+        return image;
     }
 
     private byte @NotNull [] compressBytes(byte[] data) {

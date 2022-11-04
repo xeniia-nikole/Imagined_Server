@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.CommentDTO;
+import com.example.demo.dataTransferObject.CommentDTO;
 import com.example.demo.exceptions.PostNotFoundException;
 import com.example.demo.model.Comment;
 import com.example.demo.model.Post;
@@ -37,7 +37,7 @@ public class CommentService {
     public Comment saveComment(Long postId, @NotNull CommentDTO commentDTO, Principal principal) {
         User user = getUserByPrincipal(principal);
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new PostNotFoundException("Post cannot be found for username: " + user.getEmail()));
+                .orElseThrow(() -> new PostNotFoundException("Post cannot be found for user: " + user.getEmail()));
 
         Comment comment = new Comment();
         comment.setPost(post);

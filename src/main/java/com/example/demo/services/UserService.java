@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.UserDTO;
+import com.example.demo.dataTransferObject.UserDTO;
 import com.example.demo.model.User;
 import com.example.demo.model.enums.ERole;
 import com.example.demo.exceptions.UserExistException;
@@ -49,8 +49,8 @@ public class UserService {
 
     public User updateUser(@NotNull UserDTO userDTO, Principal principal) {
         User user = getUserByPrincipal(principal);
-        user.setName(userDTO.getFirstname());
-        user.setSurname(userDTO.getLastname());
+        user.setName(userDTO.getName());
+        user.setSurname(userDTO.getSurname());
         user.setBio(userDTO.getBio());
 
         return userRepository.save(user);

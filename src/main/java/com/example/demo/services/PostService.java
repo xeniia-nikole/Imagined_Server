@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.PostDTO;
+import com.example.demo.dataTransferObject.PostDTO;
 import com.example.demo.exceptions.PostNotFoundException;
 import com.example.demo.model.Image;
 import com.example.demo.model.Post;
